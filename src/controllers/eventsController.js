@@ -5,9 +5,9 @@ const postEvent = async (req, res) => {
         const event = new Event({
             title: req.body.title,
             summary: req.body.summary,
-            description: req.body.description,
-            imageUrls: req.body.imageUrls,
-            postedBy: req.body.postedBy,
+            body: req.body.body,
+            images: req.body.images,
+            author: req.body.author,
             admin: req.admin.email
         })
         const savedEvent = await event.save();
@@ -25,7 +25,7 @@ const getEvents = async (req, res) => {
 
     try {
          const events = await Event.find()
-            .select('_id title summary description imageUrls date location eventDate postedBy') 
+            .select('_id title summary body images date location eventDate author') 
             .skip(startIndex)
             .limit(limit);
         const total = await Event.countDocuments();
@@ -87,15 +87,15 @@ const updateEvent = async (req, res) => {
         }
 
         if (req.body.description) {
-            updateFields.description = req.body.description;
+            updateFields.body = req.body.body;
         }
 
         if(req.body.location){
             updateFields.location = req.body.location;
         }
 
-        if(req.body.postedBy){
-            updateFields.postedBy = req.body.postedBy;
+        if(req.body.author){
+            updateFields.author = req.body.author;
         }
 
         updateFields.admin = req.admin.email;

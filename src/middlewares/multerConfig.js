@@ -10,8 +10,8 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     const name = Date.now() + "-" + path.basename(file.originalname);
 
-    req.body.imageUrls = req.body.imageUrls || [];
-    req.body.imageUrls.push(`${process.env.BASE_URL}/images/${name}`);
+    req.body.images = req.body.images || [];
+    req.body.images.push(`${process.env.BASE_URL}/images/${name}`);
 
     cb(null, name);
   }

@@ -7,10 +7,10 @@ const eventSchema = mongoose.Schema({
     summary: {
         type: String
     },
-    description: {
+    body: {
         type: String
     },
-    imageUrls: [{
+    images: [{
         type: String
       }],
     date: {
@@ -23,7 +23,7 @@ const eventSchema = mongoose.Schema({
     eventDate: {
         type: Date
     },
-    postedBy: {
+    author: {
         type: String
     },
     admin: {
