@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #333;
+      color: white;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .event-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .event {
+      margin-bottom: 20px;
+      padding: 15px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+    .event img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .event-details {
+      margin-bottom: 10px;
+    }
+
+    .event-actions {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+
+    button {
+      padding: 8px 12px;
+      margin-right: 5px;
+      cursor: pointer;
+    }
+
+    .search-bar {
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      padding: 8px;
+      width: 60%;
+    }
+
+    button[type="submit"] {
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Admin Dashboard</h1>
+  </header>
+
+  <div class="container">
+    <div class="search-bar">
+      <input type="text" placeholder="Search events...">
+      <button type="submit">Search</button>
+      <a href="/admin/create-event">
+        <button type="submit">Create Event</button>
+      </a>
+    </div>
+
+    <ul class="eventList" id="event-list">
+      <li class="event">
+        <!-- <img src="event1.jpg" alt="Event 1 Image"> -->
+        <div class="event-details">
+          <h3>Event 1 Title</h3>
+          <p>Event 1 Body</p>
+          <p>Author: John Doe</p>
+        </div>
+        <div class="event-actions">
+          <button>Edit</button>
+          <button>Delete</button>
+        </div>
+      </li>
+
+      <li class="event">
+        <!-- <img src="event2.jpg" alt="Event 2 Image"> -->
+        <div class="event-details">
+          <h3>Event 2 Title</h3>
+          <p>Event 2 Body</p>
+          <p>Author: Jane Doe</p>
+        </div>
+        <div class="event-actions">
+          <button onclick="editEvent('')">Edit</button>
+          <button onclick="deleteEvent('')">Delete</button>
+        </div>
+      </li>
+
+      <!-- Add more events as needed -->
+
+    </ul>
+
+    <div>
+      <!-- Add form for creating events here -->
+    </div>
+  </div>
+
+</body>
+
+<script src="/script/dashboard.js"></script>
+
+</html>

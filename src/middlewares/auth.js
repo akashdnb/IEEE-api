@@ -3,7 +3,11 @@ const Admin = require('../models/adminModel');
 
 const auth = async (req, res, next) => {
     try {
-        const token = req.header('Authorization').split(' ')[1];
+        const bearerToken =  req.header('Authorization') || req.cookies.token;
+        if(!bearerToken){
+            throw new Error();
+        }
+        const token = bearerToken.split(' ')[1];
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
         const admin = await Admin.findOne({ _id: decoded._id, 'tokens.token': token});
 
@@ -15,10 +19,14 @@ const auth = async (req, res, next) => {
         req.admin = admin;
         next();
     } catch (err) {
-        res.status(401).json({ message: 'Please authenticate', error: err });
+        if(err.message === 'jwt expired'){
+            req.cookies = NULL;
+            return res.status(401).json({ message: 'Please authenticate', error: err });
+        }else{
+            res.status(401).json({ message: 'Please authenticate', error: err });
+        }  
     }
 }
-
 
 module.exports = {
     auth

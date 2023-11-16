@@ -1,7 +1,8 @@
 const Event = require('../models/eventModel');
+const cloudinary = require('../cloudinary/cloudinaryConfig')
 
 const postEvent = async (req, res) => {
-    try{
+    try {
         const event = new Event({
             title: req.body.title,
             summary: req.body.summary,
@@ -12,8 +13,8 @@ const postEvent = async (req, res) => {
         })
         const savedEvent = await event.save();
         res.status(200).json(savedEvent);
-    }catch(err){
-        res.status(400).json({message: err});
+    } catch (err) {
+        res.status(400).json({ message: err });
     }
 }
 
@@ -24,10 +25,11 @@ const getEvents = async (req, res) => {
     const endIndex = page * limit;
 
     try {
-         const events = await Event.find()
-            .select('_id title summary body images date location eventDate author') 
+        const events = await Event.find()
+            .select('_id title summary body images date location eventDate author')
             .skip(startIndex)
-            .limit(limit);
+            .limit(limit)
+            .sort({ _id: -1 });
         const total = await Event.countDocuments();
 
         const pagination = {
@@ -57,27 +59,45 @@ const getEvents = async (req, res) => {
 }
 
 const getEventById = async (req, res) => {
-    try{
+    try {
         const event = await Event.findById(req.params.id);
         res.status(200).json(event);
-    }catch(err){
-        res.status(400).json({message: err});
+    } catch (err) {
+        res.status(400).json({ message: err });
     }
 }
 
 const deleteEvent = async (req, res) => {
-    try{
-        const event = await Event.findByIdAndDelete(req.params.id);
-        res.status(200).json(event);
-    }catch(err){
-        res.status(400).json({message: err});
+    try {
+        const event = await Event.findById(req.params.id);
+
+        if (!event) {
+            return res.status(404).json({ message: 'Event not found' });
+        }
+
+        const publicIds = event.images.map(url => extractPublicIdFromUrl(url)).filter(Boolean);
+
+        await cloudinary.api
+            .delete_resources(publicIds, { type: 'upload', resource_type: 'image' });
+
+        const deletedEvent = await Event.findByIdAndDelete(req.params.id);
+
+        if (!deletedEvent) {
+            return res.status(404).json({ message: 'Event not found' });
+        }
+
+        res.status(200).json({message: 'event deleted', deletedEvent});
+    } catch (err) {
+        console.error(`Error deleting event: ${err.message}`);
+        res.status(500).json({ message: 'Internal server error' });
     }
-}
+};
+
 
 const updateEvent = async (req, res) => {
     try {
         const updateFields = {};
-        
+
         if (req.body.title) {
             updateFields.title = req.body.title;
         }
@@ -90,11 +110,11 @@ const updateEvent = async (req, res) => {
             updateFields.body = req.body.body;
         }
 
-        if(req.body.location){
+        if (req.body.location) {
             updateFields.location = req.body.location;
         }
 
-        if(req.body.author){
+        if (req.body.author) {
             updateFields.author = req.body.author;
         }
 
@@ -107,6 +127,24 @@ const updateEvent = async (req, res) => {
         res.status(400).json({ message: err.message });
     }
 };
+
+const extractPublicIdFromUrl = (url) => {
+    if (url) {
+        const parts = url.split('/');
+        const publicIdWithExtension = parts[parts.length - 1];
+
+        if (publicIdWithExtension.includes('.')) {
+            const filename = publicIdWithExtension.split('.')[0];
+
+            const foldername = parts[parts.length - 2];
+            const publicId = `${foldername}/${filename}`;
+
+            return publicId;
+        }
+    }
+    return null;
+};
+
 
 
 module.exports = {

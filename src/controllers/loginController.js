@@ -11,7 +11,7 @@ const login = async (req, res) => {
 
             if (admin && bcrypt.compareSync(password, admin.password)) {
                 const token = await admin.generateAuthToken();
-                res.status(200).send({ email: admin.email, role: admin.role, token });
+                res.status(200).send({ email: admin.email, role: admin.role, token});
 
             } else {
                 res.status(401).send({ error: 'Invalid credentials' });

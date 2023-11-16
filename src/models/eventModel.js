@@ -29,7 +29,7 @@ const eventSchema = mongoose.Schema({
     admin: {
         type: String
     }
-})
+}, {timestamps : true})
 
-const databaseName = process.env.DATABASE_NAME || "IeeeEvents";
+const databaseName = process.env.DATABASE_NAME || "IeeeEvent";
 module.exports = new mongoose.model(databaseName, eventSchema);
