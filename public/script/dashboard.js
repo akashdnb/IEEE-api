@@ -20,7 +20,7 @@ async function fetchEvents(page, filterText) {
       loader.style.display = 'none';
       pagination = data.pagination;
       document.getElementById('currentPage').innerText = page;
-      handlePagination(pagination)
+      handlePagination(pagination);
       displayEvents(data.events);
     })
     .catch(error => {
@@ -91,6 +91,29 @@ function deleteEvent(id) {
         loader.style.display = 'none';
       });
   }
+}
+
+
+//logout
+
+function logout() {
+  loader.style.display = 'block';
+  fetch('/admin/logout', {
+    method: 'POST',
+  })
+    .then(response => response.json())
+    .then(data => {
+      loader.style.display = 'none';
+      document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      window.location.href = '/admin/login';
+    })
+    .catch(error => {
+      console.error('Error deleting event:', error)
+      loader.style.display = 'none';
+      document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      window.location.href = '/admin/login';
+    });
+    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 }
 
 

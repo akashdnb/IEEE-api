@@ -25,7 +25,7 @@ const getEvents = async (req, res) => {
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
 
-    const searchText = req.query.title? req.query.title : ' ';
+    const searchText = req.query.title? req.query.title : '';
     const query = searchText != 'undefined' ? { title: { $regex: searchText, $options: 'i' } } : {};
 
     try {

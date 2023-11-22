@@ -35,8 +35,8 @@ app.use("/admin", adminRoute);
 app.use("/api", apiRoute);
 
 app.get('/', (req, res) => {
-  res.render('index')
-})
+  res.redirect('/admin/login');
+});
 
 
 const imagePath = 'folder_name/image_name'; 

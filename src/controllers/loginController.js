@@ -52,12 +52,17 @@ const register = async (req, res) => {
 
 const logout = async (req, res) => {
     try {
-        req.admin.tokens = req.admin.tokens.filter((token) => {
-            return token.token !== req.token;
-        });
-        await req.admin.save();
+        const bearerToken =  req.header('Authorization') || req.cookies.token;
+        const token = bearerToken.split(' ')[1];
+
+        await Admin.updateOne(
+            { 'tokens.token': token },
+            { $pull: { 'tokens.token': token } }
+        );
+        res.clearCookie('token');
         res.status(200).send({ message: 'Logout successful' });
     } catch (err) {
+        res.clearCookie('token');
         res.status(500).json({ message: 'Internal Server Error', err });
     }
 }

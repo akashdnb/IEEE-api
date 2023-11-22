@@ -8,6 +8,7 @@ const eventsController = require('../controllers/eventsController');
 
 router.get('/login', loginController.login);
 router.post('/login', loginController.login);
+router.post('/logout', loginController.logout);
 
 router.get('/register', loginController.register);
 router.post('/register', loginController.register);

@@ -22,6 +22,20 @@
       text-align: center;
     }
 
+    #logoutButton {
+      background-color: #555;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      float: right;
+    }
+
+    #logoutButton:hover {
+      background-color: #777;
+    }
+
     .container {
       max-width: 800px;
       margin: 20px auto;
@@ -170,6 +184,7 @@
 
   <header>
     <h1>Admin Dashboard</h1>
+    <button onclick="logout()" id="logoutButton">Logout</button>
   </header>
 
   <div class="container">
