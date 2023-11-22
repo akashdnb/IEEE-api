@@ -1,6 +1,8 @@
 const Admin = require('../models/adminModel');
 const bcrypt = require('bcryptjs');
 
+const maxAge = 1 * 24 * 60 * 60 * 1000; // 3 days
+
 const login = async (req, res) => {
     try {
         if (req.method === 'GET') {
@@ -11,7 +13,9 @@ const login = async (req, res) => {
 
             if (admin && bcrypt.compareSync(password, admin.password)) {
                 const token = await admin.generateAuthToken();
-                res.status(200).send({ email: admin.email, role: admin.role, token});
+                res.cookie('token', `Bearer ${token}`,
+                    { maxAge: maxAge, httpOnly: true });
+                res.status(200).send({ email: admin.email, role: admin.role, token });
 
             } else {
                 res.status(401).send({ error: 'Invalid credentials' });
@@ -26,7 +30,7 @@ const login = async (req, res) => {
 
 const register = async (req, res) => {
     try {
-        if (req.method === 'GET1') {
+        if (req.method === 'GET') {
             res.render('register');
         } else if (req.method === 'POST') {
             const { name, email, role, password } = req.body;
@@ -34,6 +38,8 @@ const register = async (req, res) => {
             const savedAdmin = await admin.save();
 
             const token = await admin.generateAuthToken();
+            res.cookie('token', `Bearer ${token}`,
+                { maxAge: maxAge, httpOnly: true });
             res.status(200).send({ name: savedAdmin.name, email: savedAdmin.email, role: savedAdmin.role, token });
 
         } else {

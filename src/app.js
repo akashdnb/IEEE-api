@@ -10,7 +10,7 @@ const apiRoute = require('./routes/api');
 const path = require('path');
 const hbs = require('hbs');
 
-const PORT = 3000 || process.env.PORT
+const PORT = process.env.PORT || 3000
 
 const static_path = path.join(__dirname, "../public");
 const templates_path = path.join(__dirname, "../templates/views");
@@ -26,7 +26,11 @@ app.use(express.json());
 app.use(cookieParser())
 
 
-app.use(cors());
+const corsOptions = {
+  origin: '*',
+};
+
+app.use(cors(corsOptions));
 app.use("/admin", adminRoute);
 app.use("/api", apiRoute);
 

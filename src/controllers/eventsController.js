@@ -9,6 +9,7 @@ const postEvent = async (req, res) => {
             body: req.body.body,
             images: req.body.images,
             author: req.body.author,
+            location: req.body.location,
             admin: req.admin.email
         })
         const savedEvent = await event.save();
@@ -24,8 +25,11 @@ const getEvents = async (req, res) => {
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
 
+    const searchText = req.query.title? req.query.title : ' ';
+    const query = searchText != 'undefined' ? { title: { $regex: searchText, $options: 'i' } } : {};
+
     try {
-        const events = await Event.find()
+        const events = await Event.find(query)
             .select('_id title summary body images date location eventDate author')
             .skip(startIndex)
             .limit(limit)
@@ -106,7 +110,7 @@ const updateEvent = async (req, res) => {
             updateFields.summary = req.body.summary;
         }
 
-        if (req.body.description) {
+        if (req.body.body) {
             updateFields.body = req.body.body;
         }
 

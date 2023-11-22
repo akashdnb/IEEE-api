@@ -24,4 +24,8 @@ router.get('/create-event', auth, (req, res)=>{
     res.render('create-event');
 });
 
+router.get('/edit-event/:id', auth, (req, res)=>{
+    res.render('edit-event', {id: req.params.id});
+});
+
 module.exports = router;

@@ -1,5 +1,10 @@
+const loader = document.getElementById('loader');
+const loginBtn = document.getElementById('loginBtn');
+
 document.getElementById('loginForm').addEventListener('submit', function (event) {
     event.preventDefault();
+    loader.style.display = 'block';
+    loginBtn.setAttribute('disabled', 'disabled');
     const formData = new URLSearchParams(new FormData(this));
 
     fetch('/admin/login', {
@@ -11,12 +16,16 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
     })
         .then(response => response.json())
         .then(data => {
-            const token = `Bearer ${data.token}`;
-            setCookie("token", token, 1);
+            loader.style.display = 'none';
+            loginBtn.removeAttribute('disabled');
+            // const token = `Bearer ${data.token}`;
+            // setCookie("token", token, 1);
             window.location.href = 'dashboard'
             
         })
         .catch(error => {
+            loader.style.display = 'none';
+            loginBtn.removeAttribute('disabled');
             console.error('Login failed:', error);
             // Handle error, e.g., show an error message to the user
         });
