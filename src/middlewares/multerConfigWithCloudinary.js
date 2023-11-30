@@ -35,7 +35,7 @@ module.exports = (req, res, next) => {
           if (error) {
             reject(error);
           } else {
-            resolve(result.url);
+            resolve(convertToHttps(result.url));
           }
         }).end(file.buffer);
       });
@@ -51,3 +51,13 @@ module.exports = (req, res, next) => {
       });
   });
 };
+
+
+// function to convert http url to https
+function convertToHttps(httpUrl) {
+  if (httpUrl.startsWith('http://')) {
+      return 'https://' + httpUrl.slice(7);
+  } else {
+      return httpUrl;
+  }
+}
