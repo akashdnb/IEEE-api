@@ -33,12 +33,12 @@ const getEvents = async (req, res) => {
         ...Object.keys(req.query).reduce((acc, key) => {
             const value = req.query[key];
             if (value !== 'undefined' && value !== '' && key != 'page' && key != 'limit' && key != 'title') {
-                acc[key] = { $regex: new RegExp(value, 'i') };
+                acc[key] = value;
             }
             return acc;
         }, {})
     };
-
+    
     try {
         const events = await Event.find(query)
             .select('_id title summary body images date location eventDate author isFeatured')
