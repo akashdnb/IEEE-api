@@ -41,7 +41,7 @@ const getEvents = async (req, res) => {
 
     try {
         const events = await Event.find(query)
-            .select('_id title summary body images date location eventDate author')
+            .select('_id title summary body images date location eventDate author isFeatured')
             .skip(startIndex)
             .limit(limit)
             .sort({ _id: -1 });
