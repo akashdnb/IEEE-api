@@ -26,7 +26,18 @@ const getEvents = async (req, res) => {
     const endIndex = page * limit;
 
     const searchText = req.query.title? req.query.title : '';
-    const query = searchText != 'undefined' ? { title: { $regex: searchText, $options: 'i' } } : {};
+    const regexSearch = searchText != 'undefined' ? { title: { $regex: searchText, $options: 'i' } } : {};
+
+    const query = {
+        ...regexSearch,
+        ...Object.keys(req.query).reduce((acc, key) => {
+            const value = req.query[key];
+            if (value !== 'undefined' && value !== '' && key != 'page' && key != 'limit' && key != 'title') {
+                acc[key] = { $regex: new RegExp(value, 'i') };
+            }
+            return acc;
+        }, {})
+    };
 
     try {
         const events = await Event.find(query)
@@ -99,6 +110,7 @@ const deleteEvent = async (req, res) => {
 
 
 const updateEvent = async (req, res) => {
+    // console.log(req.body)
     try {
         const updateFields = {};
 
@@ -120,6 +132,13 @@ const updateEvent = async (req, res) => {
 
         if (req.body.author) {
             updateFields.author = req.body.author;
+        }
+
+        if(req.body.isFeatured && (req.body.isFeatured === 'on' || req.body.isFeatured === true)){
+            updateFields.isFeatured = true;
+        }
+        else{
+            updateFields.isFeatured = false;
         }
 
         updateFields.admin = req.admin.email;

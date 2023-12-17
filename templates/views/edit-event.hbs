@@ -43,13 +43,15 @@
       border: 1px solid #ccc;
       border-radius: 4px;
     }
-    #body{
+
+    #body {
       height: 400px;
     }
 
     button {
       background-color: #4caf50;
       color: #fff;
+      margin: auto;
       padding: 10px 15px;
       border: none;
       border-radius: 4px;
@@ -68,7 +70,8 @@
       height: auto;
       margin-top: 10px;
     }
-     .progress-overlay {
+
+    .progress-overlay {
       display: none;
       position: fixed;
       top: 0;
@@ -110,13 +113,16 @@
       border-radius: 4px;
       transition: width 0.3s ease;
     }
+    #isFeatured input {
+      margin-left: 10px;
+    }
   </style>
 
 </head>
 
 <body>
 
-    <div id="progress-overlay" class="progress-overlay">
+  <div id="progress-overlay" class="progress-overlay">
     <div class="progress-container">
       <p class="progress-text">Submitting...</p>
       <div class="progress-bar">
@@ -139,16 +145,20 @@
     <label for="author">Author:</label>
     <input type="text" id="author" name="author" required>
 
+    <label for="isFeatured">Is Featured:</label>
+    <input style="width: fit-content; margin-bottom: 8px" type="checkbox" id="isFeatured" name="isFeatured" {{isFeatured}}>
+
     <label for="location">Location:</label>
     <input type="text" id="location" name="location" required>
 
     <button type="submit">Edit Event</button>
   </form>
 
-   <script>
-        window.eventId = "{{id}}";
-    </script>
+  <script>
+    window.eventId = "{{id}}";
+  </script>
 
 </body>
 <script src="/script/edit-event.js"></script>
+
 </html>

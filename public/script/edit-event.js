@@ -18,6 +18,7 @@ var quill = new Quill('#editor-container', {
         document.getElementById("summary").value = result.summary;
         document.getElementById("author").value = result.author;
         document.getElementById("location").value = result.location;
+        document.getElementById("isFeatured").checked = result.isFeatured;
         quill.root.innerHTML = result.body;
     
     })
