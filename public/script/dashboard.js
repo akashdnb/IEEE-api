@@ -42,7 +42,7 @@ function displayEvents(events) {
         <img src="${event.images[0]}" alt="${event.title} Image">
         <div class="event-details">
           <h3>${event.title}</h3>
-          <p>${event.body}</p>
+          <p>${event.summary}</p>
           <p>Author: ${event.author}</p>
         </div>
         <div class="event-actions">
